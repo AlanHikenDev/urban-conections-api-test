@@ -14,6 +14,7 @@ class StoresController extends Controller
     public function index()
     {
         //
+        return stores::all();
     }
 
     /**
@@ -30,6 +31,12 @@ class StoresController extends Controller
     public function store(StorestoresRequest $request)
     {
         //
+        $store = Stores::create([
+            'name' => $request->name,
+            'seller_id'=> $request->seller_id
+        ]);
+
+        return $store;
     }
 
     /**
@@ -51,16 +58,33 @@ class StoresController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatestoresRequest $request, stores $stores)
+    public function update(UpdatestoresRequest $request, stores $store)
     {
         //
+        $validatedData = $request->validated();
+
+        // Actualizar el vendedor
+        $store->update($validatedData);
+
+        // Respuesta
+        return response()->json([
+            'message' => 'Vendedor actualizado correctamente',
+            'data' => $store,
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(stores $stores)
+    public function destroy(stores $store)
     {
         //
+        if($store->delete()) {
+
+            return response()->json([
+                'message' => 'Tienda '.$store->id.' eliminado correctamente',
+            ], 200);
+        }
+
     }
 }

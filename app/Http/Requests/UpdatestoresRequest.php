@@ -11,7 +11,7 @@ class UpdatestoresRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdatestoresRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'  => 'sometimes|string|max:255', // "sometimes" permite que el campo sea opcional
+            'seller_id' => 'sometimes',
         ];
     }
 }
