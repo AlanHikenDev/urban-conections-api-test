@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\Models\Sellers;
 class StoreSellersRequest extends FormRequest
 {
     /**
@@ -11,7 +11,7 @@ class StoreSellersRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class StoreSellersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required', 
+            'email' => 'required|string|lowercase|email|max:255|unique:'.Sellers::class,
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'El campo nombre de orden es necesario.',
+            'email.required' => 'El campo email es necesario.',
+            'email.email' => 'El campo emaol debe de ser vailido',
         ];
     }
 }
